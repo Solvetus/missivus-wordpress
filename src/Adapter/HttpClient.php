@@ -73,6 +73,7 @@ class HttpClient implements HttpClientInterface {
 		);
 
 		if ( is_wp_error( $response ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- this message goes to error_log and to callers that escape at output time; escaping here would entity-mangle the log.
 			throw new \RuntimeException( $response->get_error_message() );
 		}
 

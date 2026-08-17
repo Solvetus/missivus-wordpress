@@ -141,6 +141,7 @@ class Mailer {
 		$problem = $this->settings->get_configuration_problem();
 
 		if ( '' !== $problem ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- log-bound; escaped by whoever renders it.
 			throw new GraphException( $problem );
 		}
 

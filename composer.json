@@ -1,0 +1,15 @@
+{
+    "name": "solvetus/missivus-wordpress",
+    "description": "Dev-only harness for Missivus for WordPress. The plugin itself ships with zero runtime dependencies and no Composer autoloader.",
+    "license": "GPL-3.0-or-later",
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

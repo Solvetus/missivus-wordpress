@@ -36,7 +36,7 @@ class Autoloader {
 	 */
 	public static function load( $class_name ) {
 		$prefixes = array(
-			'Missivus\\'          => __DIR__ . '/',
+			'Missivus\\'           => __DIR__ . '/',
 			'Solvetus\\Missivus\\' => __DIR__ . '/Vendor/Solvetus/Missivus/',
 		);
 

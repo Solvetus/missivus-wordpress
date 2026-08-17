@@ -253,6 +253,7 @@ class WpMailParser {
 			$name = is_string( $filename ) && '' !== $filename ? $filename : basename( $path );
 
 			if ( ! is_readable( $path ) ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- the message goes to error_log and is escaped by whoever renders it; entity-escaping a filesystem path here would mangle the log.
 				throw new GraphException( 'Missivus: attachment file is not readable at ' . $path );
 			}
 
@@ -260,6 +261,7 @@ class WpMailParser {
 			$bytes = file_get_contents( $path );
 
 			if ( false === $bytes ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- same as above: log-bound, escaped at output.
 				throw new GraphException( 'Missivus: attachment file could not be read at ' . $path );
 			}
 
