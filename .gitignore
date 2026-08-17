@@ -1,8 +1,8 @@
 .DS_Store
-dist/
-vendor/
+/dist/
+/vendor/
 node_modules/
 composer.lock
 *.phar
 .phpunit.result.cache
-.wp/
+/.wp/
