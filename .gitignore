@@ -1,0 +1,8 @@
+.DS_Store
+dist/
+vendor/
+node_modules/
+composer.lock
+*.phar
+.phpunit.result.cache
+.wp/
