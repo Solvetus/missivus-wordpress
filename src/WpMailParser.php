@@ -108,7 +108,7 @@ class WpMailParser {
 		}
 
 		/** This filter is documented in wp-includes/pluggable.php */
-		$content_type = apply_filters( 'wp_mail_content_type', $content_type );
+		$content_type = apply_filters( 'wp_mail_content_type', $content_type ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core's own filter, applied as wp_mail() itself would.
 
 		$body = isset( $atts['message'] ) ? (string) $atts['message'] : '';
 

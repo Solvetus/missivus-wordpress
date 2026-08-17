@@ -47,6 +47,7 @@ class Plugin {
 	 * @return void
 	 */
 	public static function load_textdomain() {
+		// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- the shipped .mo files in /languages must load on installs that never touch wordpress.org.
 		load_plugin_textdomain(
 			'missivus',
 			false,

@@ -105,7 +105,7 @@ class Mailer {
 		}
 
 		/** This action is documented in wp-includes/pluggable.php */
-		do_action( 'wp_mail_succeeded', $atts );
+		do_action( 'wp_mail_succeeded', $atts ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- deliberately firing core's own hook so observers keep working when wp_mail() is short-circuited.
 
 		return true;
 	}
@@ -189,10 +189,10 @@ class Mailer {
 	 */
 	private function apply_forced_from( Message $message ) {
 		/** This filter is documented in wp-includes/pluggable.php */
-		$requested = trim( (string) apply_filters( 'wp_mail_from', $message->getFromAddress() ) );
+		$requested = trim( (string) apply_filters( 'wp_mail_from', $message->getFromAddress() ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core's own filter, applied as wp_mail() itself would.
 
 		/** This filter is documented in wp-includes/pluggable.php */
-		$name = trim( (string) apply_filters( 'wp_mail_from_name', $message->getFromName() ) );
+		$name = trim( (string) apply_filters( 'wp_mail_from_name', $message->getFromName() ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core's own filter, applied as wp_mail() itself would.
 
 		$sender = $this->settings->get_sender_mailbox();
 
@@ -230,7 +230,7 @@ class Mailer {
 		$error_data['graph_body']   = $e->getResponseBody();
 
 		/** This action is documented in wp-includes/pluggable.php */
-		do_action( 'wp_mail_failed', new \WP_Error( 'wp_mail_failed', $e->getMessage(), $error_data ) );
+		do_action( 'wp_mail_failed', new \WP_Error( 'wp_mail_failed', $e->getMessage(), $error_data ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core's own failure hook; loggers listen for it.
 
 		if ( ! $this->settings->should_fallback() ) {
 			return false;
