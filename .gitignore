@@ -6,3 +6,4 @@ composer.lock
 *.phar
 .phpunit.result.cache
 /.wp/
+.phpunit.cache/
