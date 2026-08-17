@@ -1,0 +1,244 @@
+# Copyright (C) 2026 Solvetus
+# This file is distributed under the GPLv3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Missivus 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/missivus\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Italian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-17T22:35:32+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: missivus\n"
+
+#. Plugin Name of the plugin
+#: missivus.php
+#: src/Admin/SettingsPage.php:47
+#: src/Admin/SettingsPage.php:48
+#: src/Admin/SettingsPage.php:87
+msgid "Missivus"
+msgstr "Missivus"
+
+#. Plugin URI of the plugin
+#: missivus.php
+msgid "https://missivus.com"
+msgstr "https://missivus.com"
+
+#. Description of the plugin
+#: missivus.php
+msgid "Send all WordPress email through Microsoft 365 via the Graph API — application permissions and a shared mailbox; no SMTP, no user login, no paid add-on."
+msgstr "Invia tutta la posta di WordPress tramite Microsoft 365 con l’API Graph — permessi applicativi e una casella condivisa; niente SMTP, nessun accesso utente, nessun componente a pagamento."
+
+#. Author of the plugin
+#: missivus.php
+msgid "Solvetus"
+msgstr "Solvetus"
+
+#. Author URI of the plugin
+#: missivus.php
+msgid "https://solvetus.com"
+msgstr "https://solvetus.com"
+
+#: src/Admin/SettingsPage.php:79
+msgid "You do not have permission to manage Missivus."
+msgstr "Non hai i permessi per gestire Missivus."
+
+#: src/Admin/SettingsPage.php:89
+msgid "Send all WordPress email through Microsoft 365 via the Graph API — application permissions and one shared mailbox. No SMTP, no user login."
+msgstr "Invia tutta la posta di WordPress tramite Microsoft 365 con l’API Graph — permessi applicativi e una sola casella condivisa. Niente SMTP, nessun accesso utente."
+
+#: src/Admin/SettingsPage.php:98
+msgid "Send email through Microsoft Graph"
+msgstr "Invia la posta tramite Microsoft Graph"
+
+#: src/Admin/SettingsPage.php:98
+msgid "The master switch. Off means WordPress keeps using its own mailer, untouched."
+msgstr "L’interruttore principale. Se disattivato, WordPress continua a usare il proprio sistema di invio, invariato."
+
+#: src/Admin/SettingsPage.php:99
+msgid "Directory (tenant) ID"
+msgstr "ID della directory (tenant)"
+
+#: src/Admin/SettingsPage.php:99
+msgid "From your app registration’s Overview page in Microsoft Entra."
+msgstr "Dalla pagina Panoramica della registrazione dell’app in Microsoft Entra."
+
+#: src/Admin/SettingsPage.php:100
+msgid "Application (client) ID"
+msgstr "ID applicazione (client)"
+
+#: src/Admin/SettingsPage.php:100
+msgid "From the same Overview page."
+msgstr "Dalla stessa pagina Panoramica."
+
+#: src/Admin/SettingsPage.php:102
+#: src/Settings.php:304
+msgid "Client secret"
+msgstr "Segreto client"
+
+#: src/Admin/SettingsPage.php:102
+msgid "The secret Value from Certificates & secrets — not the Secret ID. Write-only: it is never shown again here."
+msgstr "Il Valore del segreto in Certificati e segreti — non l’ID del segreto. Sola scrittura: non viene mai più mostrato qui."
+
+#: src/Admin/SettingsPage.php:103
+msgid "Certificate path"
+msgstr "Percorso del certificato"
+
+#: src/Admin/SettingsPage.php:103
+msgid "Absolute path to a PEM holding the private key and the certificate. Only used when the method is Certificate."
+msgstr "Percorso assoluto di un PEM con la chiave privata e il certificato. Usato solo quando il metodo è Certificato."
+
+#: src/Admin/SettingsPage.php:104
+#: src/Settings.php:305
+msgid "Certificate passphrase"
+msgstr "Passphrase del certificato"
+
+#: src/Admin/SettingsPage.php:104
+msgid "Only if the key is encrypted. Write-only."
+msgstr "Solo se la chiave è cifrata. Sola scrittura."
+
+#: src/Admin/SettingsPage.php:105
+msgid "Sender mailbox"
+msgstr "Casella mittente"
+
+#: src/Admin/SettingsPage.php:105
+msgid "The shared mailbox every email is sent as. Application-only Graph cannot send as anything else, so this always wins over a From header."
+msgstr "La casella condivisa da cui viene inviata tutta la posta. Graph in modalità applicazione non può inviare come nient’altro, quindi questa vince sempre su un’intestazione From."
+
+#: src/Admin/SettingsPage.php:106
+msgid "Save sent email to the mailbox’s Sent Items"
+msgstr "Salva la posta inviata nella Posta inviata della casella"
+
+#: src/Admin/SettingsPage.php:106
+msgid "Keeps an audit trail in the shared mailbox."
+msgstr "Mantiene una traccia di controllo nella casella condivisa."
+
+#: src/Admin/SettingsPage.php:107
+msgid "Fall back to the WordPress mailer when Graph fails"
+msgstr "Ripiega sul sistema di invio di WordPress quando Graph fallisce"
+
+#: src/Admin/SettingsPage.php:107
+msgid "Off by default, deliberately: a failure you can see beats an email that quietly goes out some other way. Every failure is logged either way."
+msgstr "Disattivato per impostazione predefinita, deliberatamente: un errore visibile vale più di un’e-mail che parte in silenzio per un’altra via. Ogni errore viene comunque registrato."
+
+#: src/Admin/SettingsPage.php:115
+msgid "Send a test email"
+msgstr "Invia un’e-mail di prova"
+
+#: src/Admin/SettingsPage.php:120
+msgid "External services"
+msgstr "Servizi esterni"
+
+#: src/Admin/SettingsPage.php:122
+msgid "This plugin talks to two Microsoft endpoints, and only when it sends email: login.microsoftonline.com, to obtain an access token (your Directory ID, Application ID and credential are sent there), and graph.microsoft.com, to send the message (the email’s content, recipients and attachments are sent there). Nothing else leaves your site, and nothing is sent anywhere while the plugin is switched off."
+msgstr "Questo plugin comunica con due endpoint Microsoft, e solo quando invia posta: login.microsoftonline.com, per ottenere un token di accesso (vi vengono inviati l’ID della directory, l’ID dell’applicazione e la credenziale), e graph.microsoft.com, per inviare il messaggio (vi vengono inviati il contenuto dell’e-mail, i destinatari e gli allegati). Nient’altro lascia il tuo sito, e niente viene inviato da nessuna parte finché il plugin è disattivato."
+
+#: src/Admin/SettingsPage.php:123
+msgid "Microsoft’s privacy terms"
+msgstr "Termini sulla privacy di Microsoft"
+
+#: src/Admin/SettingsPage.php:127
+msgid "Missivus is free and open source. If you would rather not do the Entra and Exchange setup yourself, Solvetus offers paid installation and support."
+msgstr "Missivus è gratuito e open source. Se preferisci non occuparti della configurazione di Entra ed Exchange, Solvetus offre installazione e supporto a pagamento."
+
+#: src/Admin/SettingsPage.php:149
+msgid "Recipient"
+msgstr "Destinatario"
+
+#: src/Admin/SettingsPage.php:151
+msgid "Send test email"
+msgstr "Invia e-mail di prova"
+
+#. translators: %s: the reason the test cannot run yet, e.g. "missing sender mailbox".
+#: src/Admin/SettingsPage.php:158
+#, php-format
+msgid "The test sends with the saved settings, and they cannot send yet: %s. Fill in the missing part and click Save Changes first."
+msgstr "La prova invia con le impostazioni salvate, che non possono ancora inviare: %s. Compila la parte mancante e fai prima clic su Salva le modifiche."
+
+#: src/Admin/SettingsPage.php:164
+msgid "Sends one message through Microsoft Graph with the saved settings — the fallback is never used for a test. Failures show the exact error Microsoft returned."
+msgstr "Invia un messaggio tramite Microsoft Graph con le impostazioni salvate — il ripiego non viene mai usato per una prova. Gli errori mostrano l’errore esatto restituito da Microsoft."
+
+#: src/Admin/SettingsPage.php:211
+#: src/Admin/SettingsPage.php:240
+#: src/Admin/SettingsPage.php:266
+msgid "Defined in wp-config.php"
+msgstr "Definito in wp-config.php"
+
+#: src/Admin/SettingsPage.php:243
+msgid "Saved — enter a new value to replace it"
+msgstr "Salvato — inserisci un nuovo valore per sostituirlo"
+
+#: src/Admin/SettingsPage.php:263
+msgid "Authentication method"
+msgstr "Metodo di autenticazione"
+
+#: src/Admin/SettingsPage.php:272
+msgid "Client secret (start here — two clicks in Entra)"
+msgstr "Segreto client (inizia qui — due clic in Entra)"
+
+#: src/Admin/SettingsPage.php:277
+msgid "Certificate (optional hardening — the credential never travels in a request body)"
+msgstr "Certificato (irrobustimento facoltativo — la credenziale non viaggia mai nel corpo di una richiesta)"
+
+#. translators: %s: a wp-config.php constant name, e.g. MISSIVUS_TENANT_ID.
+#: src/Admin/SettingsPage.php:320
+#, php-format
+msgid "This value comes from the %s constant in wp-config.php and cannot be edited here."
+msgstr "Questo valore proviene dalla costante %s in wp-config.php e non può essere modificato qui."
+
+#: src/Admin/TestEmail.php:57
+msgid "You do not have permission to send a Missivus test email."
+msgstr "Non hai i permessi per inviare un’e-mail di prova di Missivus."
+
+#: src/Admin/TestEmail.php:66
+msgid "That is not a valid email address."
+msgstr "Questo non è un indirizzo e-mail valido."
+
+#. translators: %s: the recipient email address.
+#: src/Admin/TestEmail.php:78
+#, php-format
+msgid "Test email sent to %s. Microsoft accepted it — check the inbox to confirm delivery."
+msgstr "E-mail di prova inviata a %s. Microsoft l’ha accettata — controlla la casella di posta per confermare la consegna."
+
+#: src/Mailer.php:125
+msgid "Missivus test email"
+msgstr "E-mail di prova di Missivus"
+
+#: src/Mailer.php:126
+msgid "This message was sent by Missivus through the Microsoft Graph API. If you are reading it, the tenant, the app registration and the shared mailbox all work."
+msgstr "Questo messaggio è stato inviato da Missivus tramite l’API Microsoft Graph. Se lo stai leggendo, il tenant, la registrazione dell’app e la casella condivisa funzionano."
+
+#: src/Settings.php:258
+msgid "Missivus is switched off in the settings"
+msgstr "Missivus è disattivato nelle impostazioni"
+
+#: src/Settings.php:262
+msgid "Missivus is not configured: missing sender mailbox"
+msgstr "Missivus non è configurato: manca la casella mittente"
+
+#: src/Settings.php:316
+msgid "The certificate path must be an absolute filesystem path."
+msgstr "Il percorso del certificato deve essere un percorso assoluto del file system."
+
+#: src/Settings.php:332
+msgid "The sender mailbox must be an email address."
+msgstr "La casella mittente deve essere un indirizzo e-mail."
+
+#: src/Settings.php:375
+msgid "The Directory (tenant) ID must be a GUID, or a domain like contoso.onmicrosoft.com."
+msgstr "L’ID della directory (tenant) deve essere un GUID, o un dominio come contoso.onmicrosoft.com."
+
+#: src/Settings.php:376
+msgid "The Application (client) ID must be a GUID."
+msgstr "L’ID applicazione (client) deve essere un GUID."
+
+#. translators: %s: field label, e.g. "Client secret".
+#: src/Settings.php:416
+#, php-format
+msgid "%s not saved: it contains whitespace or control characters, which is always a copy-paste accident."
+msgstr "%s non salvato: contiene spazi o caratteri di controllo, il che è sempre un incidente di copia-incolla."
