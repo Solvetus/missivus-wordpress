@@ -80,9 +80,12 @@ class TestEmail {
 				)
 			);
 		} catch ( GraphException $e ) {
-			// The message is already redacted by the transport; it is the exact Microsoft
-			// error, which is the single most useful thing for diagnosing a broken tenant.
-			$this->finish( false, $e->getMessage() );
+			// The exact Microsoft error is the single most useful thing for diagnosing a
+			// broken tenant, so it is shown rather than generalised away — but only after the
+			// same redaction pass the mailer applies to everything it logs. This lands on an
+			// admin screen, which is the one place a leaked endpoint credential would be read
+			// by a person rather than merely written to a file.
+			$this->finish( false, $this->mailer->redact( $e->getMessage() ) );
 		}
 	}
 

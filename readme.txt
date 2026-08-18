@@ -4,7 +4,7 @@ Tags: email, microsoft 365, graph api, smtp, wp mail
 Requires at least: 5.7
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,10 +109,17 @@ Bugs and feature requests: [the issue tracker](https://github.com/Solvetus/missi
 
 == Changelog ==
 
+= 0.1.1 =
+* Security: endpoint override URLs are no longer repeated back into errors, the log, or the admin notice. An unsafe MISSIVUS_GRAPH_BASE_URL / MISSIVUS_LOGIN_BASE_URL was refused correctly, but the refusal echoed the rejected value verbatim, so a base URL carrying credentials or a token could reach the PHP error log and the WordPress admin. Endpoint now builds messages from scheme, host, port and path only; Redactor blanks credentials, secret-looking parameters and fragments in a URL; and Mailer::redact() is the single final pass over everything the mailer logs, hands to wp_mail_failed, or throws. Reported by @textagroup (Kirk Mayo). No configuration change is needed.
+* The vendored Graph transport is resynced from missivus-matomo v0.1.4, and remains byte-for-byte identical to it.
+
 = 0.1.0 =
 * Initial release. Routes every wp_mail() through Microsoft Graph sendMail with OAuth2 client credentials (secret or certificate, PS256 with an RS256 escape hatch), token caching in a transient with a five-minute refresh margin, forced-From with a Reply-To keep, inline and upload-session attachments, wp-config.php constant overrides, a test-email button, and an off-by-default fallback to the stock mailer. Nothing fails silently.
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+Security fix: a misconfigured Graph or login base URL could previously have its credentials written into the error log and the admin notice. Upgrading is recommended; nothing to reconfigure.
 
 = 0.1.0 =
 Initial release.

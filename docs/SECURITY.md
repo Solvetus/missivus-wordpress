@@ -1,12 +1,13 @@
 # Missivus — security review
 
-The standing security document for Missivus for WordPress v0.1.0.
+The standing security document for Missivus for WordPress v0.1.1.
 
 Two halves. The first is inherited: the Microsoft Graph transport under
 `src/Vendor/Solvetus/Missivus/` is vendored **byte-for-byte unchanged** from
 [missivus-matomo](https://github.com/Solvetus/missivus-matomo), whose
 [security review](https://github.com/Solvetus/missivus-matomo/blob/main/docs/SECURITY.md)
-(performed 2026-08-17 against its v0.1.1 tree) covers it in full — every finding below marked
+(performed 2026-08-17 against its v0.1.1 tree, with finding 12 added 2026-08-18) covers it in
+full — every finding below marked
 *(inherited)* was fixed or verified there and arrives here by vendoring. The second half is the
 WordPress-specific surface: the settings model, the admin page, the test-email endpoint and the
 adapters, written against this tree.
@@ -22,6 +23,7 @@ Nothing in this document contains a credential.
 | 1 | A base-URL override cannot aim credentials at another host | **Enforced** *(inherited)* |
 | 2 | A mid-upload failure cannot leak the pre-authenticated upload URL | **Enforced** *(inherited)* |
 | 3 | Secret redaction in logs and exceptions | **Enforced** *(inherited)*, tested here too |
+| 3a | Endpoint override URLs never reach an error, the log, or the admin screen | **Fixed in 0.1.1** *(inherited)* |
 | 4 | Secrets in HTML source, page output, or the browser | **Verified clean** |
 | 5 | Capability and nonce on the test-email endpoint | **Verified** |
 | 6 | Input validation on every setting | **Enforced** |
@@ -43,6 +45,9 @@ origin (no `http`, no embedded credentials, no query string, no malformed host) 
 is built*. The refusal follows the normal failure policy: logged, announced on `wp_mail_failed`,
 never silent.
 
+Until 0.1.1 that refusal repeated the rejected URL back verbatim, so a base URL carrying
+credentials or a token could reach the PHP error log and the admin notice. See 3a.
+
 ### 2. The upload URL is treated as a credential
 
 Graph's large-attachment upload URL is pre-authenticated: anyone holding it can write to that
@@ -54,7 +59,8 @@ masked out, and `Redactor` blanks any `uploadUrl` field in an echoed response bo
 Every string Missivus logs or shows passes through `Redactor` first: the literal secrets we hold
 are blanked wherever they appear (which catches Entra echoing a submitted value back), and shape
 matching blanks `access_token` / `client_secret` / `client_assertion` / `uploadUrl` JSON fields,
-form-encoded credentials, `Bearer` headers, and bare JWTs. A `preg_replace` failure returns the
+secret-looking `name=value` parameters, credentials and fragments inside a URL, `Bearer` headers,
+and bare JWTs. A `preg_replace` failure returns the
 mask, not the input: it fails closed. `Auth\Credentials` additionally neuters `__toString()` and
 `__debugInfo()`, so a `var_dump` or a stack trace renders `credential=redacted`.
 
@@ -62,6 +68,34 @@ The suite here re-tests this through the WordPress path: an Entra error body del
 the configured secret reaches the log and the settings page with the secret masked
 (`MailerTest::testAnEntraErrorEchoingTheSecretIsRedactedEverywhere`,
 `TestEmailEndpointTest::testAFailedTestShowsTheMicrosoftErrorBodyRedacted`).
+
+### 3a. Endpoint override URLs are never repeated back
+
+*Reported against the Matomo plugin by [@textagroup](https://github.com/textagroup) (Kirk Mayo) as
+[missivus-matomo#1](https://github.com/Solvetus/missivus-matomo/issues/1); fixed upstream in v0.1.4
+and vendored here in 0.1.1.*
+
+The refusal in finding 1 used to end its message with the rejected value verbatim, and that message
+then travelled the ordinary failure path — `Mailer::handle_failure()` logged it and attached it to
+`wp_mail_failed`, and `Admin\TestEmail` put it in the admin notice — with no final redaction pass.
+`MISSIVUS_LOGIN_BASE_URL=https://user:password@host`, or a base URL with `?access_token=…`, would
+therefore have been rejected correctly and then written out in full.
+
+Three layers now, none relying on the other two:
+
+1. `Endpoint` builds every message from scheme, host, port and path only. Userinfo, query string and
+   fragment are never concatenated into a message at all; a value it cannot parse, or a host name it
+   cannot accept, is reported by reason rather than by value.
+2. `Redactor` blanks credentials inside a URL (anchored on `://`, so an ordinary mailbox address is
+   untouched), any `name=value` on the `Redactor::SECRET_PARAMS` list, and URL fragments.
+3. `Mailer::redact()` is the single final pass over every string the mailer logs, hands to
+   `wp_mail_failed`, or throws, via `GraphException::redactedWith()`. `Admin\TestEmail` applies the
+   same pass to the text it stores for the admin notice.
+
+`tests/Unit/EndpointRedactionTest.php` holds it, including two tests that define a poisoned
+`MISSIVUS_LOGIN_BASE_URL` / `MISSIVUS_GRAPH_BASE_URL` in their own PHP process and drive the real
+failure path, asserting the credential appears in neither the log, the `wp_mail_failed` payload, nor
+the admin notice — and that no HTTP request was built at all.
 
 ---
 

@@ -116,18 +116,53 @@ class Mailer {
 	 *
 	 * @param string $to The recipient address, already validated.
 	 * @return void
-	 * @throws GraphException On any failure.
+	 * @throws GraphException On any failure, with every string in it already redacted.
 	 */
 	public function send_test( $to ) {
-		$this->deliver(
-			array(
-				'to'          => $to,
-				'subject'     => __( 'Missivus test email', 'missivus' ),
-				'message'     => __( 'This message was sent by Missivus through the Microsoft Graph API. If you are reading it, the tenant, the app registration and the shared mailbox all work.', 'missivus' ),
-				'headers'     => array(),
-				'attachments' => array(),
-			)
-		);
+		try {
+			$this->deliver(
+				array(
+					'to'          => $to,
+					'subject'     => __( 'Missivus test email', 'missivus' ),
+					'message'     => __( 'This message was sent by Missivus through the Microsoft Graph API. If you are reading it, the tenant, the app registration and the shared mailbox all work.', 'missivus' ),
+					'headers'     => array(),
+					'attachments' => array(),
+				)
+			);
+		} catch ( GraphException $e ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- log-bound and redacted here; escaped by whoever renders it.
+			throw $e->redactedWith( $this->redactor() );
+		}
+	}
+
+	/**
+	 * The single redaction pass every string leaving this class goes through, exposed because
+	 * the admin screen that renders a failed test email is the one caller outside it.
+	 *
+	 * @param string $text Anything about to be logged, returned, or shown.
+	 * @return string
+	 */
+	public function redact( $text ) {
+		return $this->redactor()->redact( $text );
+	}
+
+	/**
+	 * A redactor loaded with whatever literal secrets the current configuration holds.
+	 *
+	 * Built per call rather than cached: a configuration broken enough that get_credentials()
+	 * throws must still get the shape-matching layer, and must not leave a literal-less
+	 * redactor behind for the next send once it is fixed.
+	 *
+	 * @return Redactor
+	 */
+	private function redactor() {
+		try {
+			return new Redactor( $this->settings->get_credentials()->getSecretLiterals() );
+		} catch ( \Exception $e ) {
+			// No credentials to blank by literal. The patterns still apply, and they are the
+			// layer that catches a value we were never given in the first place.
+			return new Redactor();
+		}
 	}
 
 	/**
@@ -146,7 +181,7 @@ class Mailer {
 		}
 
 		$credentials = $this->settings->get_credentials();
-		$redactor    = new Redactor( $credentials->getSecretLiterals() );
+		$redactor    = $this->redactor();
 
 		$tokens = new TokenProvider(
 			$credentials,
@@ -203,8 +238,10 @@ class Mailer {
 		}
 
 		$this->logger->warning(
-			'Missivus: forcing From to ' . $sender . '; wp_mail asked for ' . $requested
-			. '. Set the From address to the shared mailbox to silence this.'
+			$this->redact(
+				'Missivus: forcing From to ' . $sender . '; wp_mail asked for ' . $requested
+				. '. Set the From address to the shared mailbox to silence this.'
+			)
 		);
 
 		// Only when nothing else claimed Reply-To, so an explicit one is never clobbered.
@@ -218,19 +255,23 @@ class Mailer {
 	 * with the Graph detail, then either report failure or hand the email to WordPress's own
 	 * mailer — but only when the operator explicitly opted into that.
 	 *
-	 * @param GraphException $e    The failure, message already redacted.
+	 * @param GraphException $e    The failure; every string in it is redacted again here.
 	 * @param array          $atts wp_mail()'s arguments.
 	 * @return null|false Null to run the fallback; false to make wp_mail() report failure.
 	 */
 	private function handle_failure( GraphException $e, array $atts ) {
-		$this->logger->error( 'Missivus: sending over Microsoft Graph failed: ' . $e->getMessage() );
+		// One final pass over everything that is about to leave this class, whoever built the
+		// failure and whatever they put in it.
+		$failure = $e->redactedWith( $this->redactor() );
+
+		$this->logger->error( 'Missivus: sending over Microsoft Graph failed: ' . $failure->getMessage() );
 
 		$error_data                 = $atts;
-		$error_data['graph_status'] = $e->getHttpStatus();
-		$error_data['graph_body']   = $e->getResponseBody();
+		$error_data['graph_status'] = $failure->getHttpStatus();
+		$error_data['graph_body']   = $failure->getResponseBody();
 
 		/** This action is documented in wp-includes/pluggable.php */
-		do_action( 'wp_mail_failed', new \WP_Error( 'wp_mail_failed', $e->getMessage(), $error_data ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core's own failure hook; loggers listen for it.
+		do_action( 'wp_mail_failed', new \WP_Error( 'wp_mail_failed', $failure->getMessage(), $error_data ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core's own failure hook; loggers listen for it.
 
 		if ( ! $this->settings->should_fallback() ) {
 			return false;

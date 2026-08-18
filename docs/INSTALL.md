@@ -293,7 +293,7 @@ Either through the WordPress admin:
 Or from the command line:
 
 ```bash
-wp plugin install /path/to/missivus-0.1.0.zip --activate
+wp plugin install /path/to/missivus-0.1.1.zip --activate
 ```
 
 Or manually: unzip the file inside `wp-content/plugins/` so the plugin ends up at
