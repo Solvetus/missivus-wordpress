@@ -12,7 +12,7 @@ Send all WordPress email through Microsoft 365 via the Graph API — application
 
 == Description ==
 
-Microsoft has retired basic-authentication SMTP for Microsoft 365, and PHP's `mail()` from a web server lands in spam. The result is a WordPress that quietly sends nothing: no password resets, no order confirmations, no form notifications.
+Microsoft is retiring basic-authentication SMTP for Microsoft 365 — disabled by default for existing tenants at the end of December 2026, unavailable by default for new tenants after that, with the final removal date to be announced in the second half of 2027 — and PHP's `mail()` from a web server lands in spam. The result, once your tenant's switch flips, is a WordPress that quietly sends nothing: no password resets, no order confirmations, no form notifications.
 
 Missivus routes every `wp_mail()` call through the Microsoft Graph API using **OAuth2 client credentials** and the **Mail.Send application permission**, sending as one shared mailbox you nominate. Every email WordPress produces goes out that way — there is nothing to switch over form by form.
 
@@ -76,7 +76,7 @@ No. An Exchange Online shared mailbox is free, up to 50 GB, and needs no licence
 
 = Why not just use an SMTP plugin? =
 
-Because Microsoft has retired basic-authentication SMTP for Microsoft 365. What remains is SMTP AUTH with OAuth2 — which is exactly the delegated-login dance the paid mailers do — or a licensed user account whose password becomes a shared server credential. Graph with application permissions has neither problem: no password, no user, no licence, and the credential is scoped by Exchange to one mailbox.
+Because Microsoft is retiring it: SMTP AUTH basic authentication is disabled by default for existing tenants at the end of December 2026, unavailable by default for new tenants after that, with the final removal date to be announced in the second half of 2027. What remains is SMTP AUTH with OAuth2 — which is exactly the delegated-login dance the paid mailers do — or a licensed user account whose password becomes a shared server credential. Graph with application permissions has neither problem: no password, no user, no licence, and the credential is scoped by Exchange to one mailbox.
 
 = Will installing Missivus break my email if I do nothing? =
 

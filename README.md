@@ -7,9 +7,11 @@
 **Send WordPress's email through Microsoft 365 — without SMTP, without a user account, and without a
 paid add-on.**
 
-Microsoft has retired basic-authentication SMTP for Microsoft 365, and PHP's `mail()` from a web
-server lands in spam. The result is a WordPress that quietly sends nothing: no password resets, no
-order confirmations, no form notifications.
+Microsoft is retiring basic-authentication SMTP for Microsoft 365 — disabled by default for
+existing tenants at the end of December 2026, unavailable by default for new tenants after that,
+with the final removal date to be announced in the second half of 2027 — and PHP's `mail()` from a
+web server lands in spam. The result, once your tenant's switch flips, is a WordPress that quietly
+sends nothing: no password resets, no order confirmations, no form notifications.
 
 Missivus short-circuits `wp_mail()` — through WordPress's own `pre_wp_mail` seam — into the
 Microsoft Graph API, using **OAuth2 client credentials** and the **Mail.Send application

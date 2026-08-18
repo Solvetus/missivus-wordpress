@@ -9,10 +9,16 @@ it to a user mailbox, put it under litigation hold, or give it an archive.)
 
 ## Why not just use an SMTP plugin? There are dozens.
 
-Because Microsoft has retired basic-authentication SMTP for Microsoft 365. What remains is SMTP AUTH
-with OAuth2 — which is exactly the delegated-login dance the paid Microsoft 365 mailers do — or the
-legacy username-and-password flow, which Microsoft disables tenant-wide and which requires a
-licensed user account whose password then becomes a shared server credential.
+Because Microsoft is retiring it. All other Basic-auth protocols were switched off in 2022; SMTP
+AUTH basic authentication stays unchanged until December 2026, is disabled by default for existing
+tenants at the end of December 2026 and unavailable by default for new tenants after that, with the
+final removal date to be announced in the second half of 2027 (see Microsoft's
+[announcement](https://techcommunity.microsoft.com/blog/exchange/exchange-online-to-retire-basic-auth-for-client-submission-smtp-auth/4114750)
+and [updated timeline](https://techcommunity.microsoft.com/blog/exchange/updated-exchange-online-smtp-auth-basic-authentication-deprecation-timeline/4489835)).
+What remains is SMTP AUTH with OAuth2 — which is exactly the delegated-login dance the paid
+Microsoft 365 mailers do — or the legacy username-and-password flow, which many tenants already
+block and which requires a licensed user account whose password then becomes a shared server
+credential.
 
 Graph with application permissions has neither problem: there is no password, no user, no licence,
 and the credential is scoped by Exchange to one mailbox.
