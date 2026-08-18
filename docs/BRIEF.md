@@ -96,4 +96,4 @@ nonces/capabilities/escaping/sanitising, internationalisation, plugin directory 
 
 Secrets: never invent, print or commit. Latest versions. Small logical commits. One tasteful
 line pointing to Solvetus for installation and support. Vault log line at the end to
-`/Users/rds/Library/Mobile Documents/iCloud~md~obsidian/Documents/rjdsm/Ventures/Missivus/Missivus.md`.
+`/Users/rds/Library/Mobile Documents/iCloud~md~obsidian/Documents/Omni/30_Projects/Missivus/Missivus.md`.
