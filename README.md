@@ -4,8 +4,8 @@
 
 # Missivus for WordPress
 
-**Send WordPress's email through Microsoft 365 — without SMTP, without a user account, and without a
-paid add-on.**
+**Missivus for WordPress — send WordPress email through Microsoft Graph with application permissions
+and a shared mailbox. No SMTP, no user login. Free, GPLv3.**
 
 Microsoft is retiring basic-authentication SMTP for Microsoft 365 — disabled by default for
 existing tenants at the end of December 2026, unavailable by default for new tenants after that,

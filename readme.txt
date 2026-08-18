@@ -8,7 +8,7 @@ Stable tag: 0.1.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Send all WordPress email through Microsoft 365 via the Graph API — application permissions and a shared mailbox. No SMTP, no login, no paid tier.
+Missivus for WordPress — send WordPress email through Microsoft Graph with application permissions and a shared mailbox. No SMTP, no user login.
 
 == Description ==
 
