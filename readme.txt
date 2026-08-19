@@ -4,7 +4,7 @@ Tags: email, microsoft 365, graph api, smtp, wp mail
 Requires at least: 5.7
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,7 +12,7 @@ Missivus for WordPress — send WordPress email through Microsoft Graph with app
 
 == Description ==
 
-Microsoft is retiring basic-authentication SMTP for Microsoft 365 — disabled by default for existing tenants at the end of December 2026, unavailable by default for new tenants after that, with the final removal date to be announced in the second half of 2027 — and PHP's `mail()` from a web server lands in spam. The result, once your tenant's switch flips, is a WordPress that quietly sends nothing: no password resets, no order confirmations, no form notifications.
+WordPress has no email API of its own. `wp_mail()` sends only through PHPMailer, over SMTP or PHP's `mail()` — and `mail()` from a web server usually lands in spam regardless. For Microsoft 365 that means SMTP AUTH with basic authentication — a licensed user's password stored on your server as a shared credential, on a path Microsoft is retiring: disabled by default for existing tenants from the end of December 2026, unavailable to new tenants from 2027, with final removal to follow in the second half of 2027. WordPress's PHPMailer path cannot do the OAuth2 SMTP that replaces it. Sooner or later the password resets, order confirmations and form notifications stop.
 
 Missivus routes every `wp_mail()` call through the Microsoft Graph API using **OAuth2 client credentials** and the **Mail.Send application permission**, sending as one shared mailbox you nominate. Every email WordPress produces goes out that way — there is nothing to switch over form by form.
 
@@ -76,7 +76,7 @@ No. An Exchange Online shared mailbox is free, up to 50 GB, and needs no licence
 
 = Why not just use an SMTP plugin? =
 
-Because Microsoft is retiring it: SMTP AUTH basic authentication is disabled by default for existing tenants at the end of December 2026, unavailable by default for new tenants after that, with the final removal date to be announced in the second half of 2027. What remains is SMTP AUTH with OAuth2 — which is exactly the delegated-login dance the paid mailers do — or a licensed user account whose password becomes a shared server credential. Graph with application permissions has neither problem: no password, no user, no licence, and the credential is scoped by Exchange to one mailbox.
+Because it is on borrowed time, and because of what it costs you today. Microsoft is retiring basic-authentication SMTP AUTH for Microsoft 365: it is disabled by default for existing tenants from the end of December 2026, unavailable to new tenants from 2027, and the final removal date will be announced in the second half of 2027. What remains after that is SMTP AUTH with OAuth2, which WordPress's PHPMailer path does not speak. And even while it still works, SMTP means a licensed user account whose password sits on your server as a shared credential, with no way to scope what it can do. Graph with application permissions has neither problem: no password, no user, no licence, and the credential is scoped by Exchange to one mailbox.
 
 = Will installing Missivus break my email if I do nothing? =
 
@@ -109,6 +109,9 @@ Bugs and feature requests: [the issue tracker](https://github.com/Solvetus/missi
 
 == Changelog ==
 
+= 0.1.2 =
+* Docs: corrected the SMTP AUTH retirement timeline to match Microsoft's 2026-01-27 schedule update — the previous wording read as though basic-auth SMTP was already dead rather than being phased out on a schedule. No code changes.
+
 = 0.1.1 =
 * Security: endpoint override URLs are no longer repeated back into errors, the log, or the admin notice. An unsafe MISSIVUS_GRAPH_BASE_URL / MISSIVUS_LOGIN_BASE_URL was refused correctly, but the refusal echoed the rejected value verbatim, so a base URL carrying credentials or a token could reach the PHP error log and the WordPress admin. Endpoint now builds messages from scheme, host, port and path only; Redactor blanks credentials, secret-looking parameters and fragments in a URL; and Mailer::redact() is the single final pass over everything the mailer logs, hands to wp_mail_failed, or throws. Reported by @textagroup (Kirk Mayo). No configuration change is needed.
 * The vendored Graph transport is resynced from missivus-matomo v0.1.4, and remains byte-for-byte identical to it.
@@ -117,6 +120,9 @@ Bugs and feature requests: [the issue tracker](https://github.com/Solvetus/missi
 * Initial release. Routes every wp_mail() through Microsoft Graph sendMail with OAuth2 client credentials (secret or certificate, PS256 with an RS256 escape hatch), token caching in a transient with a five-minute refresh margin, forced-From with a Reply-To keep, inline and upload-session attachments, wp-config.php constant overrides, a test-email button, and an off-by-default fallback to the stock mailer. Nothing fails silently.
 
 == Upgrade Notice ==
+
+= 0.1.2 =
+Docs-only correction to the SMTP retirement timeline and a few stale references. No functional change; upgrading is optional.
 
 = 0.1.1 =
 Security fix: a misconfigured Graph or login base URL could previously have its credentials written into the error log and the admin notice. Upgrading is recommended; nothing to reconfigure.

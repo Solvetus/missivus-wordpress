@@ -4,6 +4,12 @@ All notable changes to Missivus for WordPress are recorded here. The format foll
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] — 2026-08-19
+
+### Fixed
+
+- docs: correct SMTP retirement timeline; contact addresses; stale version strings.
+
 ## [0.1.1] — 2026-08-18
 
 ### Security
@@ -71,5 +77,6 @@ Initial release.
 - 46 PHPUnit tests against a mocked Graph; PHPCS with WordPress-Coding-Standards clean; the
   official Plugin Check passing; `php -l` clean under PHP 7.2, WordPress's floor.
 
+[0.1.2]: https://github.com/Solvetus/missivus-wordpress/releases/tag/v0.1.2
 [0.1.1]: https://github.com/Solvetus/missivus-wordpress/releases/tag/v0.1.1
 [0.1.0]: https://github.com/Solvetus/missivus-wordpress/releases/tag/v0.1.0

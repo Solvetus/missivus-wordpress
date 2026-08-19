@@ -9,7 +9,7 @@
  * Plugin Name:       Missivus
  * Plugin URI:        https://missivus.com
  * Description:       Send all WordPress email through Microsoft 365 via the Graph API — application permissions and a shared mailbox; no SMTP, no user login, no paid add-on.
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 5.7
  * Requires PHP:      7.2
  * Author:            Solvetus
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MISSIVUS_VERSION', '0.1.1' );
+define( 'MISSIVUS_VERSION', '0.1.2' );
 define( 'MISSIVUS_PLUGIN_FILE', __FILE__ );
 
 require_once __DIR__ . '/src/Autoloader.php';

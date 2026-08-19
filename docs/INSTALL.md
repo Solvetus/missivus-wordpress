@@ -9,7 +9,7 @@ You will need:
   **Exchange Administrator**.
 - Administrator access to your WordPress site.
 
-Set aside about thirty minutes. Nothing here is reversible-by-accident; every step can be undone.
+Set aside about an hour. Nothing here is reversible-by-accident; every step can be undone.
 
 Throughout, replace `example.com` with your own domain and `noreply@example.com` with whatever
 address you want WordPress's email to come from.
@@ -293,7 +293,7 @@ Either through the WordPress admin:
 Or from the command line:
 
 ```bash
-wp plugin install /path/to/missivus-0.1.1.zip --activate
+wp plugin install /path/to/missivus-<version>.zip --activate
 ```
 
 Or manually: unzip the file inside `wp-content/plugins/` so the plugin ends up at

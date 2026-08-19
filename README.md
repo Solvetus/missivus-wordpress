@@ -7,11 +7,13 @@
 **Missivus for WordPress — send WordPress email through Microsoft Graph with application permissions
 and a shared mailbox. No SMTP, no user login. Free, GPLv3.**
 
-Microsoft is retiring basic-authentication SMTP for Microsoft 365 — disabled by default for
-existing tenants at the end of December 2026, unavailable by default for new tenants after that,
-with the final removal date to be announced in the second half of 2027 — and PHP's `mail()` from a
-web server lands in spam. The result, once your tenant's switch flips, is a WordPress that quietly
-sends nothing: no password resets, no order confirmations, no form notifications.
+WordPress has no email API of its own. `wp_mail()` sends only through PHPMailer, over SMTP or
+PHP's `mail()` — and `mail()` from a web server usually lands in spam regardless. For Microsoft
+365 that means SMTP AUTH with basic authentication — a licensed user's password stored on your
+server as a shared credential, on a path Microsoft is retiring: disabled by default for existing
+tenants from the end of December 2026, unavailable to new tenants from 2027, with final removal to
+follow in the second half of 2027. WordPress's PHPMailer path cannot do the OAuth2 SMTP that
+replaces it. Sooner or later the password resets, order confirmations and form notifications stop.
 
 Missivus short-circuits `wp_mail()` — through WordPress's own `pre_wp_mail` seam — into the
 Microsoft Graph API, using **OAuth2 client credentials** and the **Mail.Send application
@@ -66,7 +68,7 @@ verify it actually took effect.
 ### Getting started
 
 Install the plugin, then follow **[the installation guide](docs/INSTALL.md)** — it is written for
-someone who has never opened Microsoft Entra, and every click is spelled out. Budget half an hour
+someone who has never opened Microsoft Entra, and every click is spelled out. Budget about an hour
 for the Microsoft side. The [FAQ](docs/faq.md) answers the questions that come up most often, and
 [docs/SECURITY.md](docs/SECURITY.md) is the standing security review.
 
