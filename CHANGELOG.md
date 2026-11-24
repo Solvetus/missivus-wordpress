@@ -4,6 +4,12 @@ All notable changes to Missivus for WordPress are recorded here. The format foll
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- ci: the release workflow now creates the Release with GitHub's own gh CLI instead of the third-party softprops/action-gh-release (supply-chain hardening). No change to the plugin.
+
 ## [0.1.2] — 2026-08-19
 
 ### Fixed
